@@ -34,6 +34,8 @@ const signupController = async (req, res) => {
 // Login controller
 const loginController = async (req, res) => {
     const { email, password } = req.body;
+
+    console.log("Login request body:", req.body);
     try {
         //checking user exists
         const existingUser = await user.findOne({ email });
@@ -62,7 +64,7 @@ const loginController = async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
 
-        
+
         //sending response
         res.status(200).json({
             message: 'Login successful',
