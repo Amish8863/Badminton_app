@@ -9,7 +9,7 @@ const PlayerLayout = () => {
     return (
         <div className="min-h-screen flex flex-col md:flex-row bg-gray-100">
             {/* Mobile Topbar */}
-            <div className="md:hidden bg-slate-800 text-white p-4 flex justify-between items-center">
+            <div className="md:hidden bg-slate-800 text-white p-4 flex justify-between items-center sticky">
                 <h1 className="text-xl font-semibold">Player Panel</h1>
                 <button onClick={() => setSidebarOpen(!sidebarOpen)}>
                     <Menu size={24} />

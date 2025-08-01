@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
+import { getUserMatches } from '../features/matches/matchSlice';
 
 function Login() {
     const navigate = useNavigate();
@@ -16,15 +17,17 @@ function Login() {
         // next step: axios call and redux dispatch
         try {
             const res = await axios.post('http://localhost:8080/api/users/login', { email: email, password: password });
+            console.log("response: ", res.data)
 
             if (res.status === 200) {
-                navigate(`player/dashboard`);
+                navigate(`/${res?.data.user.role}/dashboard`);
             } else {
                 navigate('/login');
             }
 
             // Dispatch login action to Redux store
             dispatch(login({ user: res.data.user, accessToken: res.data.accessToken }));
+            dispatch(getUserMatches(res?.data.user._id));
 
         } catch (err) {
             console.error("Login error:", err);

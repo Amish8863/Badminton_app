@@ -7,7 +7,7 @@ import MatchTypeBarChart from '../../components/player/WinnLossBarChart';
 
 const PlayerDashboard = () => {
     return (
-        <div className="p-4 md:p-6 bg-gray-100 min-h-screen space-y-8">
+        <div className="p-4 md:p-6 bg-gray-100 max-h-screen space-y-8">
             <Cards />
 
             {/* <div className="bg-white shadow rounded-xl p-6">

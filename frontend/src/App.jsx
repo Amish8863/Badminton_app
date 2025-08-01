@@ -6,9 +6,12 @@ import NotFound from './pages/NotFound';
 // import Home from './pages/Home';
 import PlayerLayout from './layouts/PlayerLayout';
 import Dashboard from './pages/player/Dashboard';
-// import PlayerHome from './components/player/Home';
 
+import RefereeLayout from './layouts/RefereeLayout';
+
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import RefereeDashboard from './pages/referee/Dashboard';
 
 function App() {
 
@@ -20,6 +23,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
 
+        <Route path='/' element={ <Navigate to={ user ? `/${user?.role}/dashboard` : '/login' } /> } />
+
         <Route element={<PrivateRoute />}>
           <Route path='/player' element={<PlayerLayout />} >
             {/* <Route index element={<PlayerHome />} /> */}
@@ -29,10 +34,24 @@ function App() {
 
         <Route path='/*' element={<NotFound />} />
 
+        <Route element={<PrivateRoute />}>
+          <Route path='/referee' element={<RefereeLayout />} >
+            <Route path='dashboard' element={<RefereeDashboard />} />
+          </Route>
+        </Route>
 
       </Routes>
+      
     </Router>
   );
 }
+
+//  <Route path="/referee" element={<RefereeLayout />}>
+          {/* <Route index element={<RefereeDashboard />} /> */}
+          {/* <Route path="matches" element={<RefereeMatchList />} /> */}
+          {/* <Route path="create" element={<CreateMatch />} /> */}
+          {/* <Route path="playground/:matchId" element={<Playground />} /> */}
+          {/* <Route path="edit/:matchId" element={<EditMatch />} /> */}
+        {/* </Route> */}
 
 export default App;

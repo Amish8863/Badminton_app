@@ -10,6 +10,7 @@ const tokenFromStorage = localStorage.getItem("accessToken")
     ? localStorage.getItem("accessToken")
     : null;
 
+
 const initialState = {
     user: userFromStorage,
     accessToken: tokenFromStorage,

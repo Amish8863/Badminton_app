@@ -1,12 +1,20 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Lucide icons
-import { Home, Users, Settings, ClipboardList } from 'lucide-react';
+import { Home, Users, Settings, ClipboardList, LogOut } from 'lucide-react';
+import { logout } from '../features/auth/authSlice';
 
-const Sidebar = () => {
+const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { user } = useSelector((state) => state.auth);
+
+    function handleLogout() {
+        dispatch(logout());
+        navigate('/login');
+    }
 
     const menuByRole = {
         player: [
@@ -26,7 +34,14 @@ const Sidebar = () => {
     const menuItems = menuByRole[user?.role] || [];
 
     return (
-        <aside className="w-64 bg-slate-800 text-white min-h-screen p-4 flex flex-col justify-between">
+        <aside
+            className={`
+                bg-slate-800 text-white min-h-screen p-4 flex flex-col justify-between
+                fixed z-50 top-0 left-0 transform transition-transform duration-200 ease-in-out
+                md:static md:translate-x-0 md:w-64
+                w-64 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+            `}
+        >
             {/* Top Section */}
             <div>
                 <h2 className="text-xl font-bold mb-6 capitalize">{user?.role} Panel</h2>
@@ -51,16 +66,26 @@ const Sidebar = () => {
             </div>
 
             {/* Bottom Profile Section */}
-            <div className="mt-8 border-t border-slate-600 pt-4 flex items-center space-x-3">
-                <img
-                    src={`https://ui-avatars.com/api/?name=${user?.name}&background=random&color=fff`}
-                    alt="avatar"
-                    className="w-10 h-10 rounded-full border border-white"
-                />
-                <div>
-                    <p className="text-sm font-semibold">{user?.name}</p>
-                    <p className="text-xs text-slate-400 capitalize">{user?.role}</p>
+            <div className="mt-8 border-t border-slate-600 pt-4 flex justify-between items-center space-x-3">
+                <div className='flex gap-4'>
+                    <img
+                        src={`https://ui-avatars.com/api/?name=${user?.name}&background=random&color=fff`}
+                        alt="avatar"
+                        className="w-10 h-10 rounded-full border border-white"
+                    />
+                    <div>
+                        <p className="text-sm font-semibold">{user?.name}</p>
+                        <p className="text-xs text-slate-400 capitalize">{user?.role}</p>
+                    </div>
                 </div>
+
+                <button
+                    onClick={handleLogout}
+                    className="text-red-500 hover:text-red-600 text-sm font-medium ml-2"
+                    title="Logout"
+                >
+                    <LogOut size={20} />
+                </button>
             </div>
         </aside>
     );
