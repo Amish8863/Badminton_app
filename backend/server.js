@@ -13,7 +13,7 @@ const app = express();
 // Middleware to enable CORS
 // app.use(cors());
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "https://badminton-app-ba6b.vercel.app",
   credentials: true,
 }));
 
