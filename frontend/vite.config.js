@@ -12,7 +12,7 @@ export default defineConfig({
   },
   server: {
   proxy: {
-    '/api': 'http://localhost:8080',
+    '/api': 'https://badminton-app-ba6b.vercel.app',
   },
 }
 })
