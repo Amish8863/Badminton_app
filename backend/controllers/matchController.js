@@ -112,7 +112,6 @@ const createMatch = async (req, res) => {
 const getUserMatches = async (req, res) => {
     const userId = req?.params.id;
     // const userId = new mongoose.Types.ObjectId(req.params.id);
-    console.log("userId: ", userId)
     try {
         if (!userId) {
             return res.status(400).json({ error: 'User ID is required.' });
@@ -199,8 +198,6 @@ const getSoloStats = async (req, res) => {
 
 const getTeamStats = async (req, res) => {
     const userId = req.params?.id;
-
-    console.log("userId: ", userId);
 
     try {
         // 🔹 Step 1: Get user name (teamAPlayers/teamBPlayers me string name stored hota hai)
@@ -355,5 +352,41 @@ const getTeamLeaderboard = async (req, res) => {
     }
 };
 
+// getting all stats of referee
+const refereeStats = async (req, res) => {
+    try {
+        const refereeId = req.user._id;
 
-module.exports = { createMatch, getUserMatches, getAllMatches, getSoloStats, getTeamStats, getSoloLeaderboard, getTeamLeaderboard };
+        const totalMatches = await Match.countDocuments({ createdBy: refereeId });
+
+        const totalWins = await Match.countDocuments({
+            createdBy: refereeId,
+            status: 'completed'
+        });
+
+        res.json({ totalMatches, totalWins });
+    } catch (err) {
+        console.error('Error while getting refereeStats: ', err);
+        res.status(500).json({ message: 'Internal server error ' });
+    };
+}
+
+//getting matches created by referee
+
+const refereeMatches = async (req, res) => {
+    const refereeId = req.user?._id;
+
+    try {
+    const matches = await Match.find({ createdBy: refereeId })
+      .populate("player1")
+      .populate("player2");
+
+    res.json({ matches });
+    } catch (error) {
+        console.error("Error fetching matches by referee:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+} 
+
+
+module.exports = { createMatch, getUserMatches, getAllMatches, getSoloStats, getTeamStats, getSoloLeaderboard, getTeamLeaderboard, refereeStats, refereeMatches };

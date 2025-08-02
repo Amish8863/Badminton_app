@@ -1,5 +1,5 @@
 const express = require('express');
-const { createMatch, getAllMatches, getSoloStats, getUserMatches, getTeamStats, getSoloLeaderboard, getTeamLeaderboard } = require('../controllers/matchController');
+const { createMatch, getAllMatches, getSoloStats, getUserMatches, getTeamStats, getSoloLeaderboard, getTeamLeaderboard, refereeStats, refereeMatches } = require('../controllers/matchController');
 const { verifyToken } = require('../controllers/authController');
 const verifyAccessToken = require('../middlewares/verifyAccessToken');
 const authorizeRole = require('../middlewares/authorizeRole');
@@ -22,6 +22,11 @@ router.get('/team-stats/:id', verifyAccessToken, getTeamStats);
 router.get('/leaderboard/solo', verifyAccessToken, getSoloLeaderboard);
 
 router.get('/leaderboard/team', verifyAccessToken, getTeamLeaderboard);
+
+// /api/matches/referee-stats
+router.get("/referee-stats", verifyAccessToken, refereeStats);
+
+router.get("/by-referee", verifyAccessToken, refereeMatches);
 
 // Exporting the router
 module.exports = router;

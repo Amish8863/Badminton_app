@@ -35,7 +35,6 @@ const signupController = async (req, res) => {
 const loginController = async (req, res) => {
     const { email, password } = req.body;
 
-    console.log("Login request body:", req.body);
     try {
         //checking user exists
         const existingUser = await user.findOne({ email });
@@ -48,9 +47,6 @@ const loginController = async (req, res) => {
             return res.status(400).json({ message: 'Invalid password' });
         }
 
-        //generating JWT token
-        // const token = jwt.sign({ id: existingUser._id, role: existingUser.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRY });
-
         //generating access token
         const accessToken = jwt.sign({ id: existingUser._id, name: existingUser.name, role: existingUser.role }, process.env.ACCESS_TOKEN, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
 
@@ -60,7 +56,7 @@ const loginController = async (req, res) => {
         //saving refresh token in cookie
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV = "production",
+            secure: process.env.NODE_ENV === "production",
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
 
@@ -113,7 +109,7 @@ const verifyToken = (req, res, next) => {
 const logoutController = (req, res) => {
     res.clearCookie('refreshToken', {
         httpOnly: true,
-        secure: process.env.NODE_ENV = "production",
+        secure: process.env.NODE_ENV === "production",
         sameSite: 'Strict'
     })
 

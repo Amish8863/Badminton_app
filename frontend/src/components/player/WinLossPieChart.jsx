@@ -18,9 +18,9 @@ const WinLossPieChart = () => {
     const matchData = useSelector((state) => state.match.data);
     console.log("matchData: ", matchData)
 
-    const data = matchData && matchData.map((item, index) => {
+    // const pieData = matchData && matchData.map((item, index) => {
         
-    })
+    // })
 
     useEffect(() => {
         if (userId) {

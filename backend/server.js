@@ -11,7 +11,11 @@ dotenv.config();
 const app = express();
 
 // Middleware to enable CORS
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true,
+}));
 
 //middleware to parse JSON bodies
 app.use(express.json());
